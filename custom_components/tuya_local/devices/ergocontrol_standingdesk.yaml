@@ -223,21 +223,9 @@ entities:
         range:
           min: 620
           max: 1180
-  # Anti-collision levels, in the order listed in the control panel manual.
+  # Anti-collision levels: 110 gyro sensor, 111 up current, 112 down current.
   - entity: number
     name: Collision sensitivity up
-    category: config
-    icon: "mdi:car-brake-alert"
-    dps:
-      - id: 110
-        type: integer
-        name: value
-        optional: true
-        range:
-          min: 0
-          max: 8
-  - entity: number
-    name: Collision sensitivity down
     category: config
     icon: "mdi:car-brake-alert"
     dps:
@@ -249,11 +237,23 @@ entities:
           min: 0
           max: 8
   - entity: number
+    name: Collision sensitivity down
+    category: config
+    icon: "mdi:car-brake-alert"
+    dps:
+      - id: 112
+        type: integer
+        name: value
+        optional: true
+        range:
+          min: 0
+          max: 8
+  - entity: number
     name: Collision sensitivity gyro
     category: config
     icon: "mdi:axis-arrow"
     dps:
-      - id: 112
+      - id: 110
         type: integer
         name: value
         optional: true
