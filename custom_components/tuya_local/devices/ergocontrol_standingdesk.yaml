@@ -1,0 +1,276 @@
+name: Standing desk
+products:
+  - id: ytr6xsdi1kngw2j1
+    manufacturer: Ergo Control
+entities:
+  - entity: sensor
+    name: Height
+    class: distance
+    dps:
+      - id: 152
+        type: integer
+        name: sensor
+        unit: mm
+        class: measurement
+  # Motors are latched: true starts moving, false stops.
+  # They are ignored by the desk while the screen lock (dp 6) is on.
+  - entity: switch
+    name: Move up
+    icon: "mdi:arrow-up-bold"
+    dps:
+      - id: 150
+        type: boolean
+        name: switch
+        optional: true
+      - id: 6
+        type: boolean
+        name: available
+        mapping:
+          - dps_val: true
+            value: false
+          - value: true
+  - entity: switch
+    name: Move down
+    icon: "mdi:arrow-down-bold"
+    dps:
+      - id: 151
+        type: boolean
+        name: switch
+        optional: true
+      - id: 6
+        type: boolean
+        name: available
+        mapping:
+          - dps_val: true
+            value: false
+          - value: true
+  # Recall a memory position. Works even while the screen lock is on.
+  - entity: button
+    name: Preset 1
+    icon: "mdi:numeric-1-box"
+    dps:
+      - id: 155
+        type: string
+        name: button
+        optional: true
+        mapping:
+          - dps_val: mem1
+            value: true
+  - entity: button
+    name: Preset 2
+    icon: "mdi:numeric-2-box"
+    dps:
+      - id: 155
+        type: string
+        name: button
+        optional: true
+        mapping:
+          - dps_val: mem2
+            value: true
+  - entity: button
+    name: Preset 3
+    icon: "mdi:numeric-3-box"
+    dps:
+      - id: 155
+        type: string
+        name: button
+        optional: true
+        mapping:
+          - dps_val: mem3
+            value: true
+  - entity: button
+    name: Preset 4
+    icon: "mdi:numeric-4-box"
+    dps:
+      - id: 155
+        type: string
+        name: button
+        optional: true
+        mapping:
+          - dps_val: mem4
+            value: true
+  # Stored memory heights: 4 x 2-byte big-endian values in mm.
+  # Not reported over the local protocol on the tested unit, so disabled
+  # by default.
+  - entity: sensor
+    name: Preset 1 height
+    class: distance
+    category: diagnostic
+    hidden: true
+    dps:
+      - id: 159
+        type: base64
+        name: sensor
+        optional: true
+        unit: mm
+        mask: "FFFF000000000000"
+  - entity: sensor
+    name: Preset 2 height
+    class: distance
+    category: diagnostic
+    hidden: true
+    dps:
+      - id: 159
+        type: base64
+        name: sensor
+        optional: true
+        unit: mm
+        mask: "0000FFFF00000000"
+  - entity: sensor
+    name: Preset 3 height
+    class: distance
+    category: diagnostic
+    hidden: true
+    dps:
+      - id: 159
+        type: base64
+        name: sensor
+        optional: true
+        unit: mm
+        mask: "00000000FFFF0000"
+  - entity: sensor
+    name: Preset 4 height
+    class: distance
+    category: diagnostic
+    hidden: true
+    dps:
+      - id: 159
+        type: base64
+        name: sensor
+        optional: true
+        unit: mm
+        mask: "000000000000FFFF"
+  - entity: sensor
+    name: Standing today
+    class: duration
+    icon: "mdi:human-handsup"
+    dps:
+      - id: 145
+        type: integer
+        name: sensor
+        optional: true
+        unit: min
+        class: measurement
+  - entity: sensor
+    name: Standing target
+    class: duration
+    category: diagnostic
+    dps:
+      - id: 146
+        type: integer
+        name: sensor
+        optional: true
+        unit: min
+  - entity: binary_sensor
+    class: problem
+    category: diagnostic
+    dps:
+      - id: 165
+        type: bitfield
+        name: sensor
+        optional: true
+        mapping:
+          - dps_val: 0
+            value: false
+          - value: true
+      - id: 165
+        type: bitfield
+        name: fault_code
+        optional: true
+  # Screen lock on the control panel (true = locked).
+  - entity: lock
+    translation_key: child_lock
+    dps:
+      - id: 6
+        type: boolean
+        name: lock
+  - entity: number
+    name: Standing height
+    category: config
+    icon: "mdi:human-male-height"
+    dps:
+      - id: 115
+        type: integer
+        name: value
+        optional: true
+        unit: mm
+        range:
+          min: 620
+          max: 1280
+  - entity: number
+    name: Maximum height
+    category: config
+    icon: "mdi:arrow-collapse-up"
+    dps:
+      - id: 108
+        type: integer
+        name: value
+        optional: true
+        unit: mm
+        range:
+          min: 720
+          max: 1280
+  - entity: number
+    name: Minimum height
+    category: config
+    icon: "mdi:arrow-collapse-down"
+    dps:
+      - id: 109
+        type: integer
+        name: value
+        optional: true
+        unit: mm
+        range:
+          min: 620
+          max: 1180
+  # Anti-collision levels, in the order listed in the control panel manual.
+  - entity: number
+    name: Collision sensitivity up
+    category: config
+    icon: "mdi:car-brake-alert"
+    dps:
+      - id: 110
+        type: integer
+        name: value
+        optional: true
+        range:
+          min: 0
+          max: 8
+  - entity: number
+    name: Collision sensitivity down
+    category: config
+    icon: "mdi:car-brake-alert"
+    dps:
+      - id: 111
+        type: integer
+        name: value
+        optional: true
+        range:
+          min: 0
+          max: 8
+  - entity: number
+    name: Collision sensitivity gyro
+    category: config
+    icon: "mdi:axis-arrow"
+    dps:
+      - id: 112
+        type: integer
+        name: value
+        optional: true
+        range:
+          min: 0
+          max: 8
+  - entity: select
+    name: Units
+    category: config
+    icon: "mdi:ruler"
+    dps:
+      - id: 101
+        type: boolean
+        name: option
+        optional: true
+        mapping:
+          - dps_val: false
+            value: Metric
+          - dps_val: true
+            value: Imperial
